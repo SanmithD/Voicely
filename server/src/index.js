@@ -3,7 +3,10 @@ import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import authRouter from './routes/auth.route.js';
+import bookmarkRouter from './routes/bookmark.route.js';
+import communityRouter from './routes/community.route.js';
 import notificationRouter from './routes/notification.route.js';
+import reportRouter from './routes/report.route.js';
 import threadRouter from './routes/thread.route.js';
 
 const app = express();
@@ -16,6 +19,13 @@ app.use(cookieParser());
 app.use('/api/auth', authRouter);
 app.use('/api/notification', notificationRouter);
 app.use('/api/thread', threadRouter);
+app.use('/api/bookmark', bookmarkRouter);
+app.use('/api/community', communityRouter);
+app.use('/api/report', reportRouter);
+
+app.get('/',(req, res)=>{
+    res.send("Hello World")
+})
 
 app.listen(PORT, ()=>{
     console.log(`server running on ${PORT}`);

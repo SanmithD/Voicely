@@ -86,3 +86,38 @@ export const deleteNotification = async(req, res) =>{
         console.log(error)
     }
 }
+
+export const postPersonalNotification = async(req, res) =>{
+    const { title, content } = req.body;
+    const { userId } = req.params;
+    try {
+        if(!title || !content){
+            return res.status(400).json({
+                success: false,
+                message: "Enter details"
+            });
+        }
+        const response = new notificationModel({
+            userId,
+            title,
+            content
+        });
+        if(!response){
+            return res.status(400).json({
+            success: false,
+            message: "Fail to post notification"
+        });
+        }
+        await response.save();
+        res.status(200).json({
+            success: true,
+            message: "Notification posted"
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Server error"
+        });
+        console.log(error);
+    }
+}

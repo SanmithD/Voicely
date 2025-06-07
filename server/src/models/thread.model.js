@@ -7,6 +7,11 @@ const threadSchema = new mongoose.Schema({
         ref: 'User',
         index: true
     },
+    communityId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Community',
+        index: true,  
+    },
     media:{
         type: String
     },
@@ -30,10 +35,20 @@ const threadSchema = new mongoose.Schema({
             default: Date.now
         }
     }],
-    likes:{
-        type: Boolean,
-        default: false
-    }
+    likes:[{
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        count:{
+            type: Number,
+            default: 0
+        },
+        time:{
+            type: Date,
+            default: Date.now
+        }
+    }]
 },{ timestamps: true });
 
 export const threadModel = threadDB.model('Thread', threadSchema);
