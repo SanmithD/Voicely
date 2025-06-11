@@ -96,9 +96,9 @@ export const leaveCommunity = async (req, res) => {
 export const getCommunityThreads = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { communityId } = req.params;
+    const { id } = req.params;
 
-    const community = await communityModel.findById(communityId);
+    const community = await communityModel.findById({ _id: id});
     if (!community)
       return res
         .status(404)
@@ -115,10 +115,9 @@ export const getCommunityThreads = async (req, res) => {
           message: "Access denied: join the community first",
         });
 
-    // Assuming threadModel has a communityId ref field
-    const threads = await threadModel.find({ communityId });
+    const threads = await threadModel.find({ communityId : id });
 
-    res.status(200).json({ success: true, threads });
+    res.status(200).json({ success: true, threads, community });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Server error" });
@@ -195,5 +194,28 @@ export const getAllCommunityThreads = async(req, res) =>{
       message: "Server error"
     });
     console.log(error);
+  }
+}
+
+export const getCommunities = async(req, res) =>{
+  try {
+    const response = await communityModel.find();
+    if(!response){
+      return res.status(404).json({
+        success: false,
+        message: "Not found"
+      });
+    }
+    res.status(200).json({
+        success: true,
+        message: "All Communities",
+        response
+      });
+  } catch (error) {
+    res.status(500).json({
+        success: false,
+        message: "Server error"
+      });
+      console.log(error);
   }
 }

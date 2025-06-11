@@ -205,6 +205,20 @@ export const getUserProfile = async(req, res) =>{
   }
 }
 
+export const checkAuth = async(req, res) =>{
+  try {
+    res.status(200).json(
+      req.user
+    )
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+    console.log(error);
+  }
+}
+
 export const deleteUserProfile = async(req, res) =>{
   const { id } = req.params;
   if(!id){
