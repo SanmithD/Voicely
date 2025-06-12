@@ -9,6 +9,6 @@ threadRouter.post('/post-community-thread/:communityId', authProtector, postThre
 threadRouter.get('/get-thread/:id', authProtector, getSingleThread);
 threadRouter.delete('/delete-thread', authProtector, deleteThread);
 threadRouter.post('/reply-thread/:id', authProtector, postReply);
-threadRouter.patch('/like-thread/:id', authProtector, giveLike);
+threadRouter.patch('/like-thread/:threadId', authProtector, giveLike);
 
 export default threadRouter

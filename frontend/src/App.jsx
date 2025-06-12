@@ -33,6 +33,7 @@ function App() {
           <Route path="/signup" element={<Signup/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/profile" element={<Profile/>}/>
+          <Route path="/profile/:id" element={<Profile/>}/>
           <Route path="/" element={<Home/>}/>
           <Route path="/community" element={<Community/>}/>
           <Route path="/newThread" element={<Thread/>}/>

@@ -16,13 +16,13 @@ export const UseCommunityStore = create((set) => ({
       toast.error("Cannot create community");
       console.log(error);
     }
-  },
+  },  
 
   getCommunities: async () => {
     try {
       const response = await axiosInstance.get(`/community/getCommunity`);
       set({ communities: response.data.response });
-      console.log(response.data);
+      console.log("Community thread", response.data);
     } catch (error) {
       toast.error("Fail to fetch");
       console.log(error);

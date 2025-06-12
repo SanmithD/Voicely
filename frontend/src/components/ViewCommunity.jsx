@@ -6,10 +6,7 @@ import CommunityThread from "./CommunityThread";
 
 function ViewCommunity() {
     const { id } = useParams();
-    console.log(id);
     const { singleCommunity, getSingleCommunity } = UseCommunityStore();
-
-    console.log(singleCommunity);
 
     const fetchCommunity = async() =>{
         await getSingleCommunity(id);

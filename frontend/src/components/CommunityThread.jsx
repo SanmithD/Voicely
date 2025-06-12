@@ -30,7 +30,7 @@ function CommunityThread({ id }) {
               Posted on {new Date(thread.createdAt).toLocaleDateString()}
             </p>
             <div className="mt-4 mb-2" >
-                <Controllers id={thread?._id} />
+                <Controllers id={thread._id} communityId={id} />
             </div>
             <hr />
           </div>

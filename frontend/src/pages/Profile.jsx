@@ -2,14 +2,17 @@ import { Loader2, UserCircle2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UseAuthStore } from "../store/UseAuthStore";
+import { UseBookmarkStore } from "../store/UseBookmarkStore";
 
 function Profile() {
   const navigate = useNavigate();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const { authUser, deleteUser, profile, logout, isProfile } = UseAuthStore();
+  const { fetchBookmark } = UseBookmarkStore();
 
   useEffect(() => {
     profile();
+    fetchBookmark();
   }, []);
 
   const handleLogout = () => {

@@ -155,7 +155,7 @@ export const postReply = async(req, res) =>{
 
 export const giveLike = async(req, res) =>{
     const userId = req.user._id;
-    const { id } = req.params;
+    const { threadId } = req.params;
     if(!userId){
         return res.status(400).json({
             success: false,
@@ -164,7 +164,7 @@ export const giveLike = async(req, res) =>{
     }
     try {
         let likeCount;
-        const thread = await threadModel.findById(id);
+        const thread = await threadModel.findById(threadId);
         if(!thread){
             return res.status(404).json({
             success: false,
@@ -183,6 +183,7 @@ export const giveLike = async(req, res) =>{
         res.status(200).json({
             success: true,
             message: checkUser ? "Liked" : "Unlike",
+            liked: checkUser === -1,
             thread: thread.likes.length
         })
     } catch (error) {

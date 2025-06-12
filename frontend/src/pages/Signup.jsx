@@ -1,4 +1,4 @@
-import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react';
 import { useState } from "react";
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
