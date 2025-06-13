@@ -1,10 +1,38 @@
 import toast from "react-hot-toast";
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.lib";
+import { UseAuthStore } from "./UseAuthStore";
 
 export const UseThreadStore = create((set) => ({
   likes: {},
   replies: [],
+  allThreads: null,
+
+  sendNewThread: async({data}) =>{
+    try {
+      const response = await axiosInstance.post(`/thread/post-community-thread/${data.communityId}`,data);
+      toast.success("Post posted");
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong")
+    }
+  },
+
+  deleteThreadPost: async(id) =>{
+    try {
+      console.log("store", id)
+      const authUser = UseAuthStore.getState().authUser;
+      const response = await axiosInstance.delete(`/thread/delete-thread/${id}`,{
+        data: { userId: authUser?.profile._id }
+      });
+      console.log(response.data);
+      toast.success("Thread deleted");
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.log(error);
+    }
+  },
 
   giveLike: async (id) => {
     try {
@@ -28,6 +56,23 @@ export const UseThreadStore = create((set) => ({
     } catch (error) {
         toast.error("Something went wrong");
         console.log(error)
+    }
+  },
+
+  shareThread: async(data) =>{
+    if(navigator.share){
+      try {
+        await navigator.share({
+          title: "Check this out!",
+          text: data,
+          url: window.location.href
+        })
+      } catch (error) {
+        toast.error("Something went wrong");
+        console.log(error);
+      }
+    }else{
+      toast.error("Post not found");
     }
   }
 }));

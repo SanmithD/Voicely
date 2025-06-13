@@ -23,7 +23,6 @@ export const UseBookmarkStore = create((set)=>({
                 params: { userId: authUser?._id }
             });
             set({ bookmark: response.data.response });
-            console.log("bookmarked", response.data.response);
         } catch (error) {
             toast.error("Something went wrong");
             console.log(error);

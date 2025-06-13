@@ -12,17 +12,16 @@ import { UseCommunityStore } from "../store/UseCommunityStore";
 import { UseThreadStore } from "../store/UseThreadStore";
 
 function Controllers({ id, communityId }) {
-  console.log(id);
   const [color, setColor] = useState("gray-500");
   const [message, setMessage] = useState("");
+  const [showFull, setShowFull] = useState(false);
   const [isComment, setIsComment] = useState(false);
   const { singleCommunity, getSingleCommunity } = UseCommunityStore();
-  const { giveLike, likes, comment } = UseThreadStore();
+  const { giveLike, likes, comment, shareThread } = UseThreadStore();
   const { addBookmark, bookmark, fetchBookmark } = UseBookmarkStore();
   const likeData = likes?.[id];
 
   const isBookmarked = bookmark?.some((item) => item.threadId === id);
-  console.log(isBookmarked);
 
   const handleLike = async () => {
     await giveLike(id);
@@ -37,6 +36,10 @@ function Controllers({ id, communityId }) {
   const toggleBookmark = async () => {
     await addBookmark(id);
     await fetchBookmark();
+  };
+
+  const sharePost = async () => {
+    await shareThread(singleCommunity);
   };
 
   useEffect(() => {
@@ -60,13 +63,19 @@ function Controllers({ id, communityId }) {
           <p className="font-medium">{likeData?.thread ?? 0}</p>
         </div>
         <div className="flex items-center space-x-1">
-          <button onClick={() => setIsComment(!isComment)}>
+          <button
+            onClick={() => setIsComment(!isComment)}
+            className="cursor-pointer hover:animate-pulse "
+          >
             <MessageCircle className="size-6" />
           </button>
           <p>{singleCommunity.threads?.length} </p>
         </div>
         <div className="flex items-center">
-          <button onClick={toggleBookmark} className="cursor-pointer">
+          <button
+            onClick={toggleBookmark}
+            className="cursor-pointer hover:animate-pulse "
+          >
             <Bookmark
               className={`size-6 ${
                 isBookmarked ? "text-yellow-500" : "text-gray-500"
@@ -75,16 +84,19 @@ function Controllers({ id, communityId }) {
           </button>
         </div>
         <div className="flex items-center">
-          <button>
+          <button
+            onClick={sharePost}
+            className="cursor-pointer hover:animate-pulse "
+          >
             <Share2Icon className="size-6" />
           </button>
         </div>
       </div>
       {isComment && (
         <div className="flex flex-col ">
-          <div className="flex justify-center items-center ">
+          <div className="flex justify-center items-center gap-2 ">
             <span className="flex justify-center items-center">
-              <MessageCircleCode className="animate-pulse" />
+              <MessageCircleCode className=" text-blue-500 " />
             </span>
             <input
               type="text"
@@ -95,13 +107,13 @@ function Controllers({ id, communityId }) {
               value={message}
             />
             <button
-              className="h-fit w-fit font-medium px-4 py-1.5 hover:bg-gray-500 active:bg-gray-800 cursor-pointer rounded "
+              className="h-fit w-fit font-medium text-[16px] px-4 py-1.5 hover:bg-gray-500 border-1 active:bg-gray-800 cursor-pointer rounded "
               onClick={sendComment}
             >
               Send
             </button>
           </div>
-          <div className="h-[100vh] overflow-y-scroll overflow-x-hidden ">
+          <div className="h-fit md:min-h-[10vh] lg:min-h-[10vh] md:max-h-[100vh] lg:max-h-[100vh] overflow-y-scroll overflow-x-hidden ">
             {Array.isArray(singleCommunity?.threads) &&
             singleCommunity.threads.length > 0 ? (
               singleCommunity.threads
@@ -120,7 +132,24 @@ function Controllers({ id, communityId }) {
                           <UserCircle2 className="w-5 h-5" />
                           <p className="font-semibold">Anonymous</p>
                         </div>
-                        <p className="mt-1">{reply.message}</p>
+                        <div className="h-fit mt-1 overflow-hidden">
+                          <p className="p-3">
+                            {showFull || reply.message.length <= 150
+                              ? reply.message
+                              : `${reply.message.substring(0, 150)}...`}
+                          </p>
+                          {reply.message.length > 150 && (
+                            <div className="px-3">
+                              <button
+                                onClick={() => setShowFull(!showFull)}
+                                className="text-blue-500 text-sm hover:underline"
+                              >
+                                {showFull ? "See less" : "See more"}
+                              </button>
+                            </div>
+                          )}
+                        </div>
+
                         <p className="text-xs text-gray-500">
                           {new Date(reply.createdAt).toLocaleDateString()}
                         </p>

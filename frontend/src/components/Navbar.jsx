@@ -21,9 +21,9 @@ function Navbar() {
   }
 
   return (
-    <nav className="flex items-center justify-between px-4 py-2 bg-base-200 text-base-content">
+    <nav className="flex items-center justify-between px-4 py-2 bg-base-200 text-base-content sticky top-0 z-50 border-b-1 ">
       <Link to="/">
-        <img src="/voicely.png" alt="logo" className="h-[50px] w-[50px]" />
+        <img src="/voicely.png" alt="logo" className="h-[100px] w-[100px]" />
       </Link>
 
       <div className="flex gap-3 justify-center items-center " >

@@ -31,7 +31,10 @@ export const postThread = async(req, res) =>{
 
         let mediaUrl;
         if(media){
-            const mediaUploader = await cloudinary.uploader.upload(media);
+            const mediaUploader = await cloudinary.uploader.upload(media,{
+                resource_type: 'raw',
+                access_mode: 'public'
+            });
             mediaUrl = mediaUploader.secure_url;
         }
         const newThread = new threadModel({
@@ -86,6 +89,7 @@ export const getAllThread = async(req, res) =>{
 
 export const deleteThread = async(req, res) =>{
     const userId = req.user._id;
+    const { id } = req.params;
     if(!userId){
         return res.status(404).json({
             success: false,
@@ -93,7 +97,7 @@ export const deleteThread = async(req, res) =>{
         });
     }
     try {
-        const response = await threadModel.findOneAndDelete({userId : userId});
+        const response = await threadModel.findOneAndDelete({ _id: id });
         if(!response){
             return res.status(404).json({
             success: false,

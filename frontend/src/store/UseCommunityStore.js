@@ -22,7 +22,6 @@ export const UseCommunityStore = create((set) => ({
     try {
       const response = await axiosInstance.get(`/community/getCommunity`);
       set({ communities: response.data.response });
-      console.log("Community thread", response.data);
     } catch (error) {
       toast.error("Fail to fetch");
       console.log(error);
@@ -52,7 +51,7 @@ export const UseCommunityStore = create((set) => ({
         const response = await axiosInstance.get(`/community/get/${id}`);
         set({ singleCommunity: response.data });
     } catch (error) {
-        toast.error("Fail to fetch");
+        toast.error("Access denied- Join Community");
         console.log(error);
     }
   }
