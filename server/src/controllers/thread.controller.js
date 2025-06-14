@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import cloudinary from "../config/cloudinary.config.js";
 import { communityModel } from "../models/community.model.js";
 import { threadModel } from "../models/thread.model.js";
@@ -13,21 +14,22 @@ export const postThread = async(req, res) =>{
         });
     }
     try {
-
-        const community = await communityModel.findOne({
-            _id: communityId,
-            $or:[
-                { ownerId: userId },
-                { 'members.userId': userId }
-            ]
-        });
-
-        // if(!community){
-        //     return res.status(403).json({
-        //         success: false,
-        //         message: "Your not a member of community"
-        //     })
-        // }
+        let community = null
+        if(communityId && mongoose.Types.ObjectId.isValid(communityId)){
+            community = await communityModel.findOne({
+                _id: communityId,
+                $or:[
+                    { ownerId: userId },
+                    { 'members.userId': userId }
+                ]
+            });
+            if(!community){
+                return res.status(404).json({
+                    success: false,
+                    message: "You're not a member of this community"
+                })
+            }
+        }
 
         let mediaUrl;
         if(media){
@@ -41,7 +43,7 @@ export const postThread = async(req, res) =>{
         const newThread = new threadModel({
             userId,
             title,
-            communityId: communityId || null,
+            communityId: (communityId && mongoose.Types.ObjectId.isValid(communityId)) ? communityId : null,
             media: mediaUrl || null,
             content
         });

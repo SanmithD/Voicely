@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import threadDB from "../lib/thread.lib.js";
 
 const threadSchema = new mongoose.Schema({
     userId:{
@@ -11,6 +10,7 @@ const threadSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Community',
         index: true,  
+        default: null
     },
     media:{
         type: String
@@ -51,4 +51,4 @@ const threadSchema = new mongoose.Schema({
     }]
 },{ timestamps: true });
 
-export const threadModel = threadDB.model('Thread', threadSchema);
+export const threadModel = mongoose.model('Thread', threadSchema);

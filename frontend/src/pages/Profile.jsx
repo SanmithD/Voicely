@@ -1,18 +1,26 @@
 import { Loader2, UserCircle2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Bookmarked from "../components/Bookmarked";
+import UserCommunity from "../components/UserCommunity";
+import UserThread from "../components/UserThread";
 import { UseAuthStore } from "../store/UseAuthStore";
 import { UseBookmarkStore } from "../store/UseBookmarkStore";
 
 function Profile() {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("Threads");
   const [confirmDelete, setConfirmDelete] = useState(false);
   const { authUser, deleteUser, profile, logout, isProfile } = UseAuthStore();
   const { fetchBookmark } = UseBookmarkStore();
 
+  const fetchDetails = async() =>{
+    await profile();
+    await fetchBookmark();
+  }
+
   useEffect(() => {
-    profile();
-    fetchBookmark();
+    fetchDetails();
   }, []);
 
   const handleLogout = () => {
@@ -88,6 +96,27 @@ function Profile() {
           </div>
         </div>
       )}
+      <div>
+      <div className="flex justify-between items-center px-6 text-2xl font-medium">
+        {["Threads", "Community", "Bookmarked"].map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`cursor-pointer border-0 border-b-2 py-2 px-4 transition duration-300 hover:text-blue-300 ${
+              activeTab === tab ? "border-b-blue-300 text-blue-300" : "border-b-transparent"
+            }`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-6 px-6">
+        {activeTab === "Threads" && <UserThread activity={authUser?.response} />}
+        {activeTab === "Community" && <UserCommunity activity={authUser?.community} />}
+        {activeTab === "Bookmarked" && <Bookmarked activity={authUser?.bookmark} />}
+      </div>
+    </div>
     </div>
   );
 }

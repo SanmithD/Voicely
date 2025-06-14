@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import notificationDB from "../lib/notficationDB.lib.js";
 
 const notificationSchema = new mongoose.Schema({
     userId:{
@@ -14,4 +13,4 @@ const notificationSchema = new mongoose.Schema({
     }
 },{ timestamps: true });
 
-export const notificationModel = notificationDB.model('Notification', notificationSchema);
+export const notificationModel = mongoose.model('Notification', notificationSchema);

@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { generateToken } from "../config/token.config.js";
 import authModel from "../models/auth.model.js";
+import { bookmarkModel } from "../models/bookmark.model.js";
 import { communityModel } from "../models/community.model.js";
 import { threadModel } from "../models/thread.model.js";
 import { sendMail } from "../service/email.service.js";
@@ -113,6 +114,7 @@ export const profile = async (req, res) => {
   try {
     const profile = await authModel.findOne({ _id: userId }).select("-password")
     const response = await threadModel.find({ userId: userId });
+    const bookmark = await bookmarkModel.find({ userId }).populate('userId').populate('threadId');
     const userCommunityThreads = await communityModel.findOne({ $or: [
       { ownerId: userId },
       { 'members.userId': userId }
@@ -128,7 +130,8 @@ export const profile = async (req, res) => {
       message: "Posted thoughts",
       profile,
       response,
-      userCommunityThreads
+      bookmark,
+      community: userCommunityThreads
     });
   } catch (error) {
     res.status(500).json({

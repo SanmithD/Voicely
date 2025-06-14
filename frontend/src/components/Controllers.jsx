@@ -11,17 +11,40 @@ import { UseBookmarkStore } from "../store/UseBookmarkStore";
 import { UseCommunityStore } from "../store/UseCommunityStore";
 import { UseThreadStore } from "../store/UseThreadStore";
 
-function Controllers({ id, communityId }) {
+function Controllers({ id, communityId, onBookmarkToggle }) {
   const [color, setColor] = useState("gray-500");
   const [message, setMessage] = useState("");
   const [showFull, setShowFull] = useState(false);
   const [isComment, setIsComment] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
   const { singleCommunity, getSingleCommunity } = UseCommunityStore();
   const { giveLike, likes, comment, shareThread } = UseThreadStore();
   const { addBookmark, bookmark, fetchBookmark } = UseBookmarkStore();
+
   const likeData = likes?.[id];
 
-  const isBookmarked = bookmark?.some((item) => item.threadId === id);
+  useEffect(() => {
+    fetchBookmark();
+  }, []);
+
+  useEffect(() => {
+    const isInStore = bookmark?.some((item) => item.threadId === id);
+    setIsBookmarked(isInStore);
+  }, [bookmark, id]);
+
+  useEffect(() => {
+    setColor(likeData?.liked ? "blue-500" : "gray-500");
+  }, [likeData]);
+
+  const toggleBookmark = async () => {
+    setIsBookmarked((prev) => !prev);
+    await addBookmark(id);
+    await fetchBookmark();
+    if (onBookmarkToggle) {
+      onBookmarkToggle(id);
+    }
+  };
 
   const handleLike = async () => {
     await giveLike(id);
@@ -33,101 +56,68 @@ function Controllers({ id, communityId }) {
     setMessage("");
   };
 
-  const toggleBookmark = async () => {
-    await addBookmark(id);
-    await fetchBookmark();
-  };
-
   const sharePost = async () => {
     await shareThread(singleCommunity);
   };
-
-  useEffect(() => {
-    fetchBookmark();
-  }, []);
-
-  useEffect(() => {
-    setColor(likeData?.liked ? "blue-500" : "gray-500");
-  }, [likeData]);
 
   return (
     <div className="mt-2">
       <div className="flex items-center gap-4">
         <div className="flex justify-center items-center space-x-1">
           <button onClick={handleLike}>
-            <ThumbsUpIcon
-              className={`text-${color} cursor-pointer size-6
-               hover:animate-pulse`}
-            />
+            <ThumbsUpIcon className={`text-${color} cursor-pointer size-6 hover:animate-pulse`} />
           </button>
           <p className="font-medium">{likeData?.thread ?? 0}</p>
         </div>
         <div className="flex items-center space-x-1">
-          <button
-            onClick={() => setIsComment(!isComment)}
-            className="cursor-pointer hover:animate-pulse "
-          >
+          <button onClick={() => setIsComment(!isComment)} className="cursor-pointer hover:animate-pulse">
             <MessageCircle className="size-6" />
           </button>
-          {/* <p>{singleCommunity.threads?.length} </p> */}
         </div>
         <div className="flex items-center">
-          <button
-            onClick={toggleBookmark}
-            className="cursor-pointer hover:animate-pulse "
-          >
-            <Bookmark
-              className={`size-6 ${
-                isBookmarked ? "text-yellow-500" : "text-gray-500"
-              }`}
-            />
+          <button onClick={toggleBookmark} className="cursor-pointer hover:animate-pulse">
+            <Bookmark className={`size-6 ${isBookmarked ? "text-yellow-500" : "text-gray-400"}`} />
           </button>
         </div>
         <div className="flex items-center">
-          <button
-            onClick={sharePost}
-            className="cursor-pointer hover:animate-pulse "
-          >
+          <button onClick={sharePost} className="cursor-pointer hover:animate-pulse">
             <Share2Icon className="size-6" />
           </button>
         </div>
       </div>
+
       {isComment && (
-        <div className="flex flex-col ">
-          <div className="flex justify-center items-center gap-2 ">
+        <div className="flex flex-col">
+          <div className="flex justify-center items-center gap-2">
             <span className="flex justify-center items-center">
-              <MessageCircleCode className=" text-blue-500 " />
+              <MessageCircleCode className="text-blue-500" />
             </span>
             <input
               type="text"
               name="message"
               placeholder="Comment..."
-              className="w-full py-2.5 border-0 border-b-2 outline-0 pl-2 "
+              className="w-full py-2.5 border-0 border-b-2 outline-0 pl-2"
               onChange={(e) => setMessage(e.target.value)}
               value={message}
             />
             <button
-              className="h-fit w-fit font-medium text-[16px] px-4 py-1.5 hover:bg-gray-500 border-1 active:bg-gray-800 cursor-pointer rounded "
+              className="h-fit w-fit font-medium text-[16px] px-4 py-1.5 hover:bg-gray-500 border-1 active:bg-gray-800 cursor-pointer rounded"
               onClick={sendComment}
             >
               Send
             </button>
           </div>
-          <div className="h-fit md:min-h-[10vh] lg:min-h-[10vh] md:max-h-[100vh] lg:max-h-[100vh] overflow-y-scroll overflow-x-hidden ">
+
+          <div className="h-fit md:min-h-[10vh] lg:min-h-[10vh] md:max-h-[100vh] lg:max-h-[100vh] overflow-y-scroll overflow-x-hidden">
             {Array.isArray(singleCommunity?.threads) &&
             singleCommunity.threads.length > 0 ? (
               singleCommunity.threads
                 .filter((thread) => thread._id === id)
                 .flatMap((thread) =>
                   thread.replies
-                    ?.sort(
-                      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-                    )
+                    ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                     .map((reply) => (
-                      <div
-                        key={reply._id}
-                        className="my-2 p-2 border-0 border-b-1 border-gray-500 space-y-1 rounded"
-                      >
+                      <div key={reply._id} className="my-2 p-2 border-0 border-b-1 border-gray-500 space-y-1 rounded">
                         <div className="flex items-center gap-2">
                           <UserCircle2 className="w-5 h-5" />
                           <p className="font-semibold">Anonymous</p>
@@ -149,7 +139,6 @@ function Controllers({ id, communityId }) {
                             </div>
                           )}
                         </div>
-
                         <p className="text-xs text-gray-500">
                           {new Date(reply.createdAt).toLocaleDateString()}
                         </p>

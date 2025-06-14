@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import threadDB from "../lib/thread.lib.js";
 
 const bookmarkSchema = new mongoose.Schema({
   threadId: {
@@ -16,4 +15,4 @@ const bookmarkSchema = new mongoose.Schema({
 
 bookmarkSchema.index({ threadId: 1 }, { unique: true });
 
-export const bookmarkModel = threadDB.model('Bookmark', bookmarkSchema);
+export const bookmarkModel = mongoose.model('Bookmark', bookmarkSchema);

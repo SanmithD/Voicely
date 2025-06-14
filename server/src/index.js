@@ -2,6 +2,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
+import connectDB from './lib/db.lib.js';
 import authRouter from './routes/auth.route.js';
 import bookmarkRouter from './routes/bookmark.route.js';
 import communityRouter from './routes/community.route.js';
@@ -9,6 +10,7 @@ import notificationRouter from './routes/notification.route.js';
 import reportRouter from './routes/report.route.js';
 import threadRouter from './routes/thread.route.js';
 
+connectDB();
 const app = express();
 const PORT = process.env.PORT || 5001;
 

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import threadDB from "../lib/thread.lib.js";
 
 const communitySchema = new mongoose.Schema({
     ownerId:{
@@ -25,4 +24,4 @@ const communitySchema = new mongoose.Schema({
     }]
 },{ timestamps: true });
 
-export const communityModel = threadDB.model('Community', communitySchema);
+export const communityModel = mongoose.model('Community', communitySchema);

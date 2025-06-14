@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import authDB from "../lib/authDB.lib.js";
 
 const authSchema = new mongoose.Schema({
     username:{
@@ -18,6 +17,6 @@ const authSchema = new mongoose.Schema({
     }
 },{ timestamps: true });
 
-const authModel = authDB.model('User', authSchema);
+const authModel = mongoose.model('User', authSchema);
 
 export default authModel;

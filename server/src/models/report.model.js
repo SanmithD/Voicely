@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import authDB from "../lib/authDB.lib.js";
 
 const reportSchema = new mongoose.Schema({
     userId:{
@@ -13,4 +12,4 @@ const reportSchema = new mongoose.Schema({
     }
 },{ timestamps: true });
 
-export const reportModel = authDB.model("Report", reportSchema);
+export const reportModel = mongoose.model("Report", reportSchema);
