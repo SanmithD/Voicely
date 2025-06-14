@@ -24,7 +24,7 @@ function Community() {
   }
 
   return (
-    <div className="h-screen px-6 py-4 md:flex lg:flex gap-7 md:gap-[50px] lg:gap-[60px]  " >
+    <div className="h-screen sm:mb-10 px-6 py-4 md:flex lg:flex gap-7 md:gap-[50px] lg:gap-[60px]  " >
       <div className="flex flex-col w-[100%] md:w-[70%] lg:w-[70%] space-y-10 " >
         <h1 className="text-2xl md:text-4xl lg:text-5xl font-medium flex justify-center items-center gap-7 " >
           <span><AudioLines className="size-9 animate-pulse " /> </span> Create Community</h1>
@@ -46,7 +46,7 @@ function Community() {
       </div>
       
       {/*fetch all communities*/}
-      <div className="w-full" >
+      <div className="w-full " >
         <Communities/>
       </div>
     </div>

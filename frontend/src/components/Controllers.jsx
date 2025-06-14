@@ -69,7 +69,7 @@ function Controllers({ id, communityId }) {
           >
             <MessageCircle className="size-6" />
           </button>
-          <p>{singleCommunity.threads?.length} </p>
+          {/* <p>{singleCommunity.threads?.length} </p> */}
         </div>
         <div className="flex items-center">
           <button

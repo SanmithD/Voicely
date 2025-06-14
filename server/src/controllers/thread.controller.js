@@ -31,10 +31,11 @@ export const postThread = async(req, res) =>{
 
         let mediaUrl;
         if(media){
-            const mediaUploader = await cloudinary.uploader.upload(media,{
-                resource_type: 'raw',
-                access_mode: 'public'
+            const mediaUploader = await cloudinary.uploader.upload(media, {
+                resource_type: 'auto',
+                allowed_formats: ['jpg', 'png', 'jpeg', 'mp4', 'mp3']
             });
+
             mediaUrl = mediaUploader.secure_url;
         }
         const newThread = new threadModel({
@@ -226,5 +227,74 @@ export const getSingleThread = async(req, res) =>{
             message: "Server error"
         });
         console.log(error)
+    }
+}
+
+export const getAllSingleThread = async(req, res) =>{
+    try {
+        const response = await threadModel.find({ communityId: null });
+        if(!response){
+            return res.status(404).json({
+                success: false,
+                message: "Not found"
+            });
+        }
+        res.status(200).json({
+                success: true,
+                message: "All single thread",
+                response
+            });
+    } catch (error) {
+        res.status(500).json({
+                success: false,
+                message: "Server error"
+            });
+            console.log(error);
+    }
+}
+
+export const postSingleThread = async(req, res) =>{
+    const { title, content, media } = req.body;
+    const userId = req.user._id;
+    if(!userId){
+        return res.status(404).json({
+            success: false,
+            message: "Invalid request"
+        });
+    }
+    try {
+        let mediaUrl;
+        if(media){
+            const mediaUploader = await cloudinary.uploader.upload(media, {
+                resource_type: 'auto',
+                allowed_formats: ['jpg', 'png', 'jpeg', 'mp4', 'mp3']
+            });
+
+            mediaUrl = mediaUploader.secure_url;
+        }
+        const newThread = new threadModel({
+            userId,
+            title,
+            communityId: null,
+            media: mediaUrl || null,
+            content
+        });
+        if(!newThread){
+            return res.status(400).json({
+            success: false,
+            message: "Fail to post thought"
+        });
+        }
+        await newThread.save();
+        res.status(201).json({
+            success: true,
+            message: "Thought posted"
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Server error"
+        });
+        console.log(error);
     }
 }

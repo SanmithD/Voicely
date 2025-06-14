@@ -19,10 +19,10 @@ function Communities() {
 
 
   return (
-    <div className="h-screen w-full" >
-        <div className="overflow-y-scroll overflow-x-hidden h-screen w-full " >
+    <div className="h-screen w-full mb-10" >
+        <div className="overflow-y-scroll overflow-x-hidden h-screen w-full mb-10 " >
             { Array.isArray(communities) && communities.length > 0 ? (
-                communities.map((data)=>(
+                communities.slice(0,20).map((data)=>(
                     <div key={data?._id} onClick={()=>navigate(`/viewCommunity/${data._id}`)} className="w-full flex justify-between items-center gap-3 my-6 border-1 px-4
                     py-4 cursor-pointer rounded-2xl hover:bg-gray-500 hover:text-white
                      " >

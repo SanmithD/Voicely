@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from 'react-router-dom';
+import Footer from "./components/Footer";
 import Loading from "./components/Loading";
 import Navbar from "./components/Navbar";
 import { UseThemeStore } from "./store/UseThemeStore";
@@ -40,6 +41,7 @@ function App() {
           <Route path="/newThread" element={<Thread/>}/>
           <Route path="/viewCommunity/:id" element={<ViewCommunity/>}/>
         </Routes>
+        <Footer/>
       </Suspense>
     </div>
   )

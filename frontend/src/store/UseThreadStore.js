@@ -7,6 +7,7 @@ export const UseThreadStore = create((set) => ({
   likes: {},
   replies: [],
   allThreads: null,
+  singleThread: [],
 
   sendNewThread: async({data}) =>{
     try {
@@ -73,6 +74,26 @@ export const UseThreadStore = create((set) => ({
       }
     }else{
       toast.error("Post not found");
+    }
+  },
+
+  postSingleThread: async({data}) =>{
+    try {
+      const response = await axiosInstance.post(`/thread/post-single-thread`,data);
+      console.log(response.data);
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.log(error);
+    }
+  },
+
+  getSingleThread: async() =>{
+    try {
+      const response = await axiosInstance.get(`/thread/get-singleAll-thread`);
+      set({ singleThread: response.data.response })
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.log(error)
     }
   }
 }));

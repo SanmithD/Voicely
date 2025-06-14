@@ -40,7 +40,7 @@ function CommunityThread({ id }) {
               ) : null}
             </div>
             <h1 className="text-xl font-bold">{thread.title}</h1>
-            <p className="text-gray-700">{thread.content}</p>
+            <p className="text-gray-400 ">{thread.content}</p>
             { thread.media ? (
               <div>
                 <MediaRenderer url={thread.media}/>

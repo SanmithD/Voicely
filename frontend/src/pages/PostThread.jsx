@@ -1,16 +1,17 @@
 import { File, X } from "lucide-react";
 import { useRef, useState } from "react";
+import SingleThread from "../components/SingleThread";
 import { UseThreadStore } from "../store/UseThreadStore";
 
-function PostThread({ communityId }) {
+function PostThread({ communityId, name = "Post Thread" }) {
   const [threadData, setThreadData] = useState({
     title: "",
-    communityId: communityId || "",
+    communityId: communityId || null,
     content: "",
   });
   const [imagePreview, setImagePreview] = useState(null);
   const imageRef = useRef(null);
-  const { sendNewThread } = UseThreadStore();
+  const { sendNewThread, postSingleThread } = UseThreadStore();
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -39,6 +40,17 @@ function PostThread({ communityId }) {
         },
       });
 
+      if (!communityId) {
+        await postSingleThread({
+          data: {
+            title: threadData.title.trim(),
+            communityId: null,
+            content: threadData.content.trim(),
+            media: imagePreview,
+          },
+        });
+      }
+
       setThreadData({ title: "", content: "" });
       removeImage();
     } catch (error) {
@@ -47,8 +59,8 @@ function PostThread({ communityId }) {
   };
 
   return (
-    <div className="px-6 py-4 flex flex-col gap-4">
-      <h1 className="text-center text-3xl font-bold">Post New Thought</h1>
+    <div className="px-6 py-4 flex justify-between flex-col gap-4">
+      <h1 className="text-center text-3xl font-bold">{name} </h1>
 
       {imagePreview && (
         <div className="mb-3">
@@ -69,50 +81,66 @@ function PostThread({ communityId }) {
         </div>
       )}
 
-      <div className="flex flex-col gap-4 max-w-md mx-auto w-full">
-        <div className="flex items-center gap-2">
-          <input
-            type="text"
-            name="title"
-            placeholder="Title"
-            value={threadData.title}
+      <div className="h-fit px-3 py-2.5 flex flex-1/2 gap-[70px] ">
+        <div className="flex flex-col gap-4 max-w-md mx-auto w-full">
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              name="title"
+              placeholder="Title"
+              value={threadData.title}
+              onChange={(e) =>
+                setThreadData({ ...threadData, title: e.target.value })
+              }
+              className="w-full border border-gray-300 rounded px-3 py-2"
+            />
+            <input
+              type="file"
+              ref={imageRef}
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            <button
+              onClick={() => imageRef.current?.click()}
+              className="p-2 border rounded hover:animate-pulse cursor-pointer "
+            >
+              <File size={20} />
+            </button>
+          </div>
+
+          <textarea
+            name="content"
+            placeholder="Description..."
+            rows={4}
+            value={threadData.content}
             onChange={(e) =>
-              setThreadData({ ...threadData, title: e.target.value })
+              setThreadData({ ...threadData, content: e.target.value })
             }
-            className="w-full border border-gray-300 rounded px-3 py-2"
+            className="w-full border border-gray-300 rounded px-3 py-2 resize-none"
           />
-          <input
-            type="file"
-            ref={imageRef}
-            onChange={handleFileChange}
-            className="hidden"
-          />
+
           <button
-            onClick={() => imageRef.current?.click()}
-            className="p-2 border rounded bg-gray-100 hover:bg-gray-200"
+            onClick={sendThread}
+            className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
           >
-            <File size={20} />
+            Share
           </button>
         </div>
-
-        <textarea
-          name="content"
-          placeholder="Description..."
-          rows={4}
-          value={threadData.content}
-          onChange={(e) =>
-            setThreadData({ ...threadData, content: e.target.value })
-          }
-          className="w-full border border-gray-300 rounded px-3 py-2 resize-none"
-        />
-
-        <button
-          onClick={sendThread}
-          className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
-        >
-          Share
-        </button>
+        <div className="hidden md:flex lg:flex flex-1/4 px-2 font-medium leading-[30px] ">
+          Sharing personal thoughts is a way to express your inner ideas,
+          feelings, or experiences with others. It can build trust, deepen
+          relationships, and invite meaningful conversations. Whether spoken or
+          written, being open helps others understand your perspective — but
+          it’s important to balance honesty with respect, and to know your
+          audience. Vulnerability is powerful, but sharing wisely is key.
+        </div>
       </div>
+      { !communityId ? (
+      <div>
+        <SingleThread />
+      </div>
+
+      ) : '' }
     </div>
   );
 }

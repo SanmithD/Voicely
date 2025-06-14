@@ -31,9 +31,9 @@ function ViewCommunity() {
         <hr />
         {/* post new community thread */}
         <div>
-           <PostThread communityId={id}/>
+           <PostThread communityId={id} name={"Post Community Thread"} />
         </div>
-        <div>
+        <div >
             <CommunityThread id={id} />
         </div>
     </div>
