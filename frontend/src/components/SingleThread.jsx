@@ -21,7 +21,7 @@ function SingleThread() {
             .map((data) => (
               <div
                 key={data?._id}
-                className="break-inside-avoid border border-zinc-300 rounded-xl shadow-md p-4 mb-4"
+                className="break-inside-avoid border-0 border-b-1 border-b-zinc-300 rounded-xl shadow-md p-4 mb-4"
               >
                 <div className="flex items-center gap-3 mb-2">
                   <UserCircle2Icon className="w-6 h-6 text-zinc-600" />

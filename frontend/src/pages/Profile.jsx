@@ -53,7 +53,7 @@ function Profile() {
         <div className="flex items-center gap-4">
           <UserCircle2 className="size-10" />
           <h2 className="text-lg font-semibold">
-            {authUser?.profile.username || "Anonymous A"}
+            {authUser?.profile?.username || "Anonymous A"}
           </h2>
         </div>
         <h2 className="text-base-content/40" >Joined at {authUser?.profile.createdAt ? new Date(authUser.profile.createdAt).toLocaleDateString() : new Date().toLocaleDateString()} </h2>

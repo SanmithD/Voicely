@@ -47,6 +47,10 @@ export const UseCommunityStore = create((set) => ({
   },
 
   getSingleCommunity: async(id) =>{
+    if(!id){
+      toast.error("Invalid request");
+      return
+    }
     try {
         const response = await axiosInstance.get(`/community/get/${id}`);
         set({ singleCommunity: response.data });

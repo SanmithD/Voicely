@@ -27,36 +27,61 @@ function PostThread({ communityId, name = "Post Thread" }) {
     if (imageRef.current) imageRef.current.value = "";
   };
 
+  // const sendThread = async () => {
+  //   if (!threadData.title.trim() && !threadData.content && !imagePreview)
+  //     return;
+  //   try {
+  //     await sendNewThread({
+  //       data: {
+  //         title: threadData.title.trim(),
+  //         communityId,
+  //         content: threadData.content.trim(),
+  //         media: imagePreview,
+  //       },
+  //     });
+
+  //     if (!communityId) {
+  //       await postSingleThread({
+  //         data: {
+  //           title: threadData.title.trim(),
+  //           communityId: null,
+  //           content: threadData.content.trim(),
+  //           media: imagePreview,
+  //         },
+  //       });
+  //     }
+
+  //     setThreadData({ title: "", content: "" });
+  //     removeImage();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   const sendThread = async () => {
-    if (!threadData.title.trim() && !threadData.content && !imagePreview)
-      return;
-    try {
-      await sendNewThread({
-        data: {
-          title: threadData.title.trim(),
-          communityId,
-          content: threadData.content.trim(),
-          media: imagePreview,
-        },
-      });
+  if (!threadData.title.trim() && !threadData.content && !imagePreview) return;
 
-      if (!communityId) {
-        await postSingleThread({
-          data: {
-            title: threadData.title.trim(),
-            communityId: null,
-            content: threadData.content.trim(),
-            media: imagePreview,
-          },
-        });
-      }
+  try {
+    const payload = {
+      title: threadData.title.trim(),
+      communityId: communityId || null,
+      content: threadData.content.trim(),
+      media: imagePreview,
+    };
 
-      setThreadData({ title: "", content: "" });
-      removeImage();
-    } catch (error) {
-      console.log(error);
+    if (communityId) {
+      await sendNewThread({ data: payload });
+    } else {
+      await postSingleThread({ data: payload });
     }
-  };
+
+    setThreadData({ title: "", content: "" });
+    removeImage();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
   return (
     <div className="px-6 py-4 flex justify-between flex-col gap-4">

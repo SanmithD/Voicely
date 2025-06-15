@@ -2,8 +2,9 @@ import toast from "react-hot-toast";
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.lib";
 import { UseAuthStore } from "./UseAuthStore";
+import { UseCommunityStore } from "./UseCommunityStore";
 
-export const UseThreadStore = create((set) => ({
+export const UseThreadStore = create((set, get) => ({
   likes: {},
   replies: [],
   allThreads: null,
@@ -11,9 +12,11 @@ export const UseThreadStore = create((set) => ({
 
   sendNewThread: async({data}) =>{
     try {
-      const response = await axiosInstance.post(`/thread/post-community-thread/${data.communityId}`,data);
+      const communityPost = await UseCommunityStore.getState().getSingleCommunity();
+      await axiosInstance.post(`/thread/post-community-thread/${data.communityId}`,data);
       toast.success("Post posted");
-      console.log(response.data);
+      await get().getSingleThread();
+      await communityPost;
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong")
@@ -77,16 +80,7 @@ export const UseThreadStore = create((set) => ({
     }
   },
 
-  postSingleThread: async({data}) =>{
-    try {
-      const response = await axiosInstance.post(`/thread/post-single-thread`,data);
-      console.log(response.data);
-    } catch (error) {
-      toast.error("Something went wrong");
-      console.log(error);
-    }
-  },
-
+  
   getSingleThread: async() =>{
     try {
       const response = await axiosInstance.get(`/thread/get-singleAll-thread`);
@@ -95,5 +89,15 @@ export const UseThreadStore = create((set) => ({
       toast.error("Something went wrong");
       console.log(error)
     }
-  }
+  },
+
+  postSingleThread: async({data}) =>{
+    try {
+      await axiosInstance.post(`/thread/post-single-thread`,data);
+      await get().getSingleThread();
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.log(error);
+    }
+  },
 }));

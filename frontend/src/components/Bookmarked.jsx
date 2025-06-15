@@ -13,7 +13,7 @@ function Bookmarked({ activity }) {
 
   const handleBookmarkToggle = (threadId) => {
     setBookmarkedThreads((prev) =>
-      prev.filter((item) => item.threadId._id !== threadId)
+      prev.filter((item) => item.threadId?._id !== threadId)
     );
   };
 
@@ -26,17 +26,17 @@ function Bookmarked({ activity }) {
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map((data) => (
               <div
-                key={data?.threadId._id}
+                key={data?.threadId?._id}
                 className="break-inside-avoid border border-zinc-300 rounded-xl shadow-md p-4 mb-4"
               >
-                <h1 className="font-bold text-xl mb-1">{data.threadId.title}</h1>
+                <h1 className="font-bold text-xl mb-1">{data.threadId?.title}</h1>
                 <p className="text-sm text-gray-500 mb-2">
-                  {new Date(data.threadId.createdAt).toLocaleString()}
+                  {new Date(data.threadId?.createdAt).toLocaleString()}
                 </p>
-                <p className="mb-2">{data.threadId.content}</p>
-                {data.threadId.media && <MediaRenderer url={data.threadId.media} />}
+                <p className="mb-2">{data.threadId?.content}</p>
+                {data.threadId?.media && <MediaRenderer url={data.threadId?.media} />}
                 <Controllers
-                  id={data?.threadId._id}
+                  id={data?.threadId?._id}
                   onBookmarkToggle={handleBookmarkToggle}
                 />
               </div>

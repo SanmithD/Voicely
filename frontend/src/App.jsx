@@ -38,7 +38,6 @@ function App() {
           <Route path="/" element={<Home/>}/>
           <Route path="/community" element={<Community/>}/>
           <Route path="/newThread" element={<Thread/>}/>
-          <Route path="/newThread" element={<Thread/>}/>
           <Route path="/viewCommunity/:id" element={<ViewCommunity/>}/>
         </Routes>
         <Footer/>
