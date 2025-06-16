@@ -65,7 +65,7 @@ function PostThread({ communityId, name = "Post Thread" }) {
     const payload = {
       title: threadData.title.trim(),
       communityId: communityId || null,
-      content: threadData.content.trim(),
+      content: threadData.content,
       media: imagePreview,
     };
 

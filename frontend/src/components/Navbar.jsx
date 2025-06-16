@@ -1,7 +1,8 @@
-import { Menu, MoonIcon, Search, SunMedium, UserCircle2 } from "lucide-react";
+import { Menu, MoonIcon, SunMedium, UserCircle2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { UseThemeStore } from "../store/UseThemeStore";
+import { Search as RecentSearch } from "./Search";
 
 function Navbar() {
   const { changeTheme } = UseThemeStore();
@@ -34,8 +35,8 @@ function Navbar() {
             <button onClick={handleTheme} ><MoonIcon/></button>
           ) }
         </div>
-        <div className="flex justify-center items-center " >
-          <span><Search className="size-6" /></span><input type="text" name="search" id="search" placeholder="Search..." className="w-full py-0.5 pl-2 border-2 border-base-300 rounded " />
+        <div>
+          <RecentSearch/>
         </div>
       {windowWidth < 480 ? (
         <div className="relative">

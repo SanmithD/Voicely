@@ -8,6 +8,7 @@ import bookmarkRouter from './routes/bookmark.route.js';
 import communityRouter from './routes/community.route.js';
 import notificationRouter from './routes/notification.route.js';
 import reportRouter from './routes/report.route.js';
+import searchRouter from './routes/search.route.js';
 import threadRouter from './routes/thread.route.js';
 
 connectDB();
@@ -28,6 +29,7 @@ app.use('/api/thread', threadRouter);
 app.use('/api/bookmark', bookmarkRouter);
 app.use('/api/community', communityRouter);
 app.use('/api/report', reportRouter);
+app.use('/api/find', searchRouter);
 
 app.get('/',(req, res)=>{
     res.send("Hello World")
