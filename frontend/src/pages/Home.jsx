@@ -1,6 +1,8 @@
-
-import RecentSearches from "../components/RecentSearches ";
+// Home.jsx
+import { lazy, Suspense } from "react";
 import SingleThread from "../components/SingleThread";
+
+const RecentSearches = lazy(() => import("../components/RecentSearches"));
 
 function Home() {
   return (
@@ -9,7 +11,9 @@ function Home() {
         <SingleThread limit={500} />
       </div>
       <div className="hidden md:block lg:block w-[30%] border-l border-gray-300 px-4">
-        <RecentSearches />
+        <Suspense fallback={<p>Loading...</p>}>
+          <RecentSearches />
+        </Suspense>
       </div>
     </div>
   );

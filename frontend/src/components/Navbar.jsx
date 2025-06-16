@@ -40,13 +40,14 @@ function Navbar() {
         </div>
       {windowWidth < 480 ? (
         <div className="relative">
-          <button onClick={() => setExtendedNavbar((prev) => prev)}>
+          <button onClick={() => setExtendedNavbar((prev) => !prev)}>
             <Menu className="size-6 cursor-pointer" />
           </button>
           {extendNavbar && (
-            <div className="absolute right-0 mt-2 bg-base-100 shadow-md rounded-md p-2">
+            <div className="absolute right-0 w-[200px] mt-4 font-medium bg-base-100 shadow-md rounded-md p-2">
+              <Link to="/newThread" className="block px-4 py-2 hover:bg-base-300 rounded">Post Thought</Link>
+              <Link to="/community" className="block px-4 py-2 hover:bg-base-300 rounded">Community</Link>
               <Link to="/profile" className="block px-4 py-2 hover:bg-base-300 rounded">Profile</Link>
-              {/* Add more links as needed */}
             </div>
           )}
         </div>

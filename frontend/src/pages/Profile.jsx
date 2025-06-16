@@ -97,7 +97,7 @@ function Profile() {
         </div>
       )}
       <div>
-      <div className="flex justify-between items-center px-6 text-2xl font-medium">
+      <div className="flex justify-between items-center px-6 text-[16px] font-medium">
         {["Threads", "Community", "Bookmarked"].map((tab) => (
           <button
             key={tab}

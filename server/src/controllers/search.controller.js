@@ -55,7 +55,7 @@ export const searchThread = async (req, res) => {
 export const getRecentSearches = async (req, res) => {
   const userId = req.user._id;
   try {
-    const response = await searchModel.findOne({ userId });
+    const response = await searchModel.find({ userId });
     if (!response) {
       return res.status(404).json({
         success: false,
@@ -82,11 +82,11 @@ export const saveHistory = async (req, res) => {
   try {
     const existing = await searchModel.findOne({ threadId });
     if (!existing) {
-        const data = await threadModel.findOne({ _id: threadId })
+        const data = await threadModel.findOne({ _id: threadId });
         const saveData = new searchModel({
             userId,
             threadId,
-            data
+            data : data.title
       });
       if (!saveData) {
         return res.status(400).json({
