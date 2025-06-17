@@ -14,8 +14,6 @@ function Profile() {
   const { authUser, deleteUser, profile, logout, isProfile } = UseAuthStore();
   const { fetchBookmark } = UseBookmarkStore();
 
-  console.log(authUser)
-
   const fetchDetails = async() =>{
     await profile();
     await fetchBookmark();

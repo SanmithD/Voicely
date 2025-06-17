@@ -107,7 +107,6 @@ export const UseThreadStore = create((set, get) => ({
     try {
       const response = await axiosInstance.get(`/thread/get-thread/${id}`);
       set({ selectedThread : response.data })
-      console.log(response.data);
     } catch (error) {
       toast.error("Something went wrong");
       console.log(error);

@@ -17,7 +17,7 @@ function SelectedThread() {
     return <p className="p-6 text-gray-500">Loading thread...</p>;
   }
 
-  const { content, createdAt, media, replies, _id } = selectedThread.response;
+  const { content, title, createdAt, media, replies, _id } = selectedThread.response;
 
   return (
     <div className="p-[30px]">
@@ -29,6 +29,7 @@ function SelectedThread() {
         <p className="text-gray-700 font-medium">
           Posted {new Date(createdAt).toLocaleString()}
         </p>
+        <h1 className="text-2xl" >{title} </h1>
         <h1 className="whitespace-pre-line md:pl-5 lg:pl-5 mt-3.5">
           {content}
         </h1>

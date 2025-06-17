@@ -1,10 +1,12 @@
 import { X } from "lucide-react";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { useSearchStore } from "../store/UseSearchStore";
 
 
 function RecentSearches(){
+  const navigate = useNavigate();
   const { getRecentSearch, recent, clearHistory } = useSearchStore();
 
   useEffect(()=>{
@@ -32,7 +34,7 @@ function RecentSearches(){
     { 
     Array.isArray(recent) && recent.length > 0 ? (
       recent.slice(0, 10).sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).map((data) =>(
-        <div key={data?._id} onClick={()=>scrollToThread(data._id)} className="relative flex flex-col gap-1 cursor-pointer hover:bg-gray-500 active:bg-gray-500 rounded-md px-6 py-3 duration-300 " >
+        <div key={data?._id} onClick={()=>{scrollToThread(data._id); navigate(`/selectedThread/${data._id}`)}} className="relative flex flex-col gap-1 cursor-pointer hover:bg-gray-500 active:bg-gray-500 rounded-md px-6 py-3 duration-300 " >
           <button onClick={()=>removeData(data?._id)}  className="absolute px-2 py-2 top-0 right-0 hover:text-red-500 cursor-pointer" ><X/></button>
           <p className="text-[16px] " >{data?.data}</p>
           <p className="text-[14px] text-gray-700 font-bold " >{ new Date(data.createdAt).toLocaleString() } </p>

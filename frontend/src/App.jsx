@@ -8,6 +8,8 @@ import Navbar from "./components/Navbar";
 import { UseThemeStore } from "./store/UseThemeStore";
 
 const Home = lazy(() => import("./pages/Home"));
+const About = lazy(()=> import("./pages/About"));
+const PrivacyPolicy = lazy(()=> import("./pages/PrivacyPolicy"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Login = lazy(() => import("./pages/Login"));
 const Profile = lazy(() => import("./pages/Profile"));
@@ -51,6 +53,18 @@ function App() {
               <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <About />
+            }
+          />
+          <Route
+            path="/privacy"
+            element={
+              <PrivacyPolicy />
             }
           />
           <Route

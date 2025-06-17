@@ -1,9 +1,11 @@
 import { Search as Find, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { useSearchStore } from "../store/UseSearchStore";
 
 export const Search = () => {
+  const navigate = useNavigate();
   const [limit, setLimit] = useState(20);
   const [isVisible, setIsVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -45,7 +47,7 @@ export const Search = () => {
           }}
           onClick={() => setIsVisible(true)}
           onChange={(e) => setSearchText(e.target.value)}
-          className="w-full py-2 pl-3 border-b-1 outline-0 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full md:w-[300px] lg:w-[300px] py-2 pl-3 border-b-1 outline-0 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
         <button
           onClick={searchData}
@@ -74,11 +76,12 @@ export const Search = () => {
                     scrollToThread(data._id);
                     setIsVisible(false); 
                     saveInHistory(data._id); 
+                    navigate(`/selectedThread/${data?._id}`)
                   }}
                   className="p-3 border-b last:border-none hover:bg-gray-700 cursor-pointer rounded-md"
                 >
                   <h2 className="font-semibold ">{data.title}</h2>
-                  <p className="text-sm text-gray-700 mt-1">{data.content}</p>
+                  {/* <p className="text-sm text-gray-700 mt-1">{data.content}</p> */}
                   <p className="text-xs text-gray-400 mt-1">
                     {new Date(data.createdAt).toLocaleString()}
                   </p>
