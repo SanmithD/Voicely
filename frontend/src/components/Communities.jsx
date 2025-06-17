@@ -32,7 +32,7 @@ function Communities() {
                         <p className="text-base-content/40 flex items-center gap-2" ><span><TimerIcon size={20} /></span> Created At { new Date(data.createdAt).toLocaleDateString() } </p>
                         </div>
                         {
-                            !data.members.some(member => member.userId === authUser?.profile._id) ? (
+                            !data.members.some(member => member.userId === authUser?.profile?._id) ? (
                         <div >
                             <button onClick={()=> handleJoin(data?._id)} className="h-fit w-fit py-2 px-6 bg-green-500 rounded cursor-pointer font-medium font-stretch-95% hover:bg-green-700 active:bg-green-900" >JOIN</button>
                         </div>

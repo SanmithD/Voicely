@@ -16,6 +16,7 @@ export const UseAuthStore = create((set, get) => ({
     try {
       const response = await axiosInstance.post(`/auth/signup`, data);
       set({ authUser: response.data });
+      localStorage.setItem('auth-user',true)
     } catch (error) {
       toast.error("Failed to signup");
       console.log(error);
@@ -29,6 +30,7 @@ export const UseAuthStore = create((set, get) => ({
     try {
       const response = await axiosInstance.post(`/auth/login`, data);
       set({ authUser: response.data });
+      localStorage.setItem('auth-user',true)
       toast.success("Logging to the Voicely");
     } catch (error) {
       console.log(error);
@@ -55,6 +57,7 @@ export const UseAuthStore = create((set, get) => ({
     try {
       set({ authUser: null });
       toast.success("Logout successfully");
+      localStorage.removeItem('auth-user')
     } catch (error) {
       console.log(error);
       toast.error("Unable to logout");

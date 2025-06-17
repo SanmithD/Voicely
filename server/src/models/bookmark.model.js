@@ -13,6 +13,6 @@ const bookmarkSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-bookmarkSchema.index({ threadId: 1 }, { unique: true });
+bookmarkSchema.index({ threadId: 1, userId: 1 }, { unique: true });
 
 export const bookmarkModel = mongoose.model('Bookmark', bookmarkSchema);

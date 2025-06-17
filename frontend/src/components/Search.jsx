@@ -38,6 +38,11 @@ export const Search = () => {
           id="search"
           placeholder="Search..."
           value={searchText}
+          onKeyDown={(e)=>{
+            if(e.key === 'Enter'){
+              searchData();
+            }
+          }}
           onClick={() => setIsVisible(true)}
           onChange={(e) => setSearchText(e.target.value)}
           className="w-full py-2 pl-3 border-b-1 outline-0 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-400"

@@ -20,7 +20,6 @@ export const useSearchStore = create((set, get) => ({
   },
 
   saveHistory: async (threadId) => {
-    console.log("thread id", threadId);
     try {
       await axiosInstance.post(`/find/saveHistory/${threadId}`);
       await get().getRecentSearch();

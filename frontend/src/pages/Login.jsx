@@ -1,10 +1,11 @@
 import { Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react';
 import { useState } from "react";
 import toast from 'react-hot-toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UseAuthStore } from '../store/UseAuthStore';
 
 function Login() {
+  const navigate = useNavigate();
   const { login, isLogging } = UseAuthStore();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -26,6 +27,7 @@ function Login() {
     const success = validateForm();
     if(success){
       login(formData);
+      navigate('/');
     }
   }
 

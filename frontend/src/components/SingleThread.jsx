@@ -1,10 +1,12 @@
 import { UserCircle2Icon } from "lucide-react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { UseThreadStore } from "../store/UseThreadStore";
 import Controllers from "./Controllers";
 import MediaRenderer from "./MediaRenderer";
 
 function SingleThread({ limit }) {
+  const navigate = useNavigate();
   const { getSingleThread, singleThread } = UseThreadStore();
 
   useEffect(() => {
@@ -22,6 +24,7 @@ function SingleThread({ limit }) {
               <div
                 key={data?._id}
                 id={`thread-${data?._id}`}
+                onClick={()=>navigate(`/selectedThread/${data?._id}`)}
                 className="break-inside-avoid border-0 border-b-1 border-b-zinc-300 rounded-xl shadow-md p-4 mb-4"
               >
                 <div className="flex items-center gap-3 mb-2">

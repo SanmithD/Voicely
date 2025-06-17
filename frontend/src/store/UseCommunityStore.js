@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.lib";
 import { UseAuthStore } from "./UseAuthStore";
 
-export const UseCommunityStore = create((set) => ({
+export const UseCommunityStore = create((set, get) => ({
   communities: null,
   singleCommunity: null,
 
@@ -11,6 +11,7 @@ export const UseCommunityStore = create((set) => ({
     try {
       const response = await axiosInstance.post(`/community/create`, data);
       toast.success("Community Created");
+      await get().getCommunities();
       set({ communities: response.data });
     } catch (error) {
       toast.error("Cannot create community");

@@ -9,6 +9,7 @@ export const UseThreadStore = create((set, get) => ({
   replies: [],
   allThreads: null,
   singleThread: [],
+  selectedThread: null,
 
   sendNewThread: async({data}) =>{
     try {
@@ -56,6 +57,7 @@ export const UseThreadStore = create((set, get) => ({
   comment: async({id , message}) =>{
     try {
         const response = await axiosInstance.post(`/thread/reply-thread/${id}`, { message });
+        await get().getThreadById(id);
         set({ replies: response.data || [] });
     } catch (error) {
         toast.error("Something went wrong");
@@ -96,8 +98,19 @@ export const UseThreadStore = create((set, get) => ({
       await axiosInstance.post(`/thread/post-single-thread`,data);
       await get().getSingleThread();
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong ( use under 10mb files ) ");
       console.log(error);
     }
   },
+
+  getThreadById: async(id) =>{
+    try {
+      const response = await axiosInstance.get(`/thread/get-thread/${id}`);
+      set({ selectedThread : response.data })
+      console.log(response.data);
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.log(error);
+    }
+  }
 }));

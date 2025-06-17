@@ -3,8 +3,7 @@ import {
   MessageCircle,
   MessageCircleCode,
   Share2Icon,
-  ThumbsUpIcon,
-  UserCircle2,
+  ThumbsUpIcon
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { UseBookmarkStore } from "../store/UseBookmarkStore";
@@ -14,7 +13,7 @@ import { UseThreadStore } from "../store/UseThreadStore";
 function Controllers({ id, communityId, onBookmarkToggle }) {
   const [color, setColor] = useState("gray-500");
   const [message, setMessage] = useState("");
-  const [showFull, setShowFull] = useState(false);
+  // const [showFull, setShowFull] = useState(false);
   const [isComment, setIsComment] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
 
@@ -108,7 +107,7 @@ function Controllers({ id, communityId, onBookmarkToggle }) {
             </button>
           </div>
 
-          <div className="h-fit md:min-h-[10vh] lg:min-h-[10vh] md:max-h-[100vh] lg:max-h-[100vh] overflow-y-scroll overflow-x-hidden">
+          {/* <div className="h-fit md:min-h-[10vh] lg:min-h-[10vh] md:max-h-[100vh] lg:max-h-[100vh] overflow-y-scroll overflow-x-hidden">
             {Array.isArray(singleCommunity?.threads) &&
             singleCommunity.threads.length > 0 ? (
               singleCommunity.threads
@@ -148,7 +147,7 @@ function Controllers({ id, communityId, onBookmarkToggle }) {
             ) : (
               <p>No replies found</p>
             )}
-          </div>
+          </div> */}
         </div>
       )}
     </div>

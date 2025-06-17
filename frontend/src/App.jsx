@@ -1,43 +1,46 @@
 import { lazy, Suspense } from "react";
 import { Toaster } from "react-hot-toast";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 
 import Footer from "./components/Footer";
 import Loading from "./components/Loading";
 import Navbar from "./components/Navbar";
-import { UseAuthStore } from "./store/UseAuthStore";
 import { UseThemeStore } from "./store/UseThemeStore";
 
-// Lazy-loaded pages
 const Home = lazy(() => import("./pages/Home"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Login = lazy(() => import("./pages/Login"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Community = lazy(() => import("./pages/Community"));
 const Thread = lazy(() => import("./pages/PostThread"));
+const SelectedThread = lazy(() => import("./components/SelectedThread"));
 const ViewCommunity = lazy(() => import("./components/ViewCommunity"));
 
-// Optional: 404 fallback page
 const NotFound = () => (
   <div className="text-center p-10 text-xl font-semibold text-red-600">
     404 - Page Not Found
   </div>
 );
 
-// Protected route wrapper
 const ProtectedRoute = ({ children }) => {
-  const { authUser } = UseAuthStore();
+  const  authUser = localStorage.getItem('auth-user');
   return authUser ? children : <Navigate to="/login" />;
 };
 
 function App() {
   const { theme } = UseThemeStore();
+  const location = useLocation();
+
+  const hideNavbarRoutes = ["/login", "/signup"];
+  const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   return (
     <div data-theme={theme}>
       <Suspense fallback={<Loading />}>
         <Toaster position="top-right" reverseOrder={false} />
-        <Navbar />
+
+        {!shouldHideNavbar && <Navbar />}
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
@@ -82,8 +85,17 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/selectedThread/:id"
+            element={
+              <ProtectedRoute>
+                <SelectedThread />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
+
         <Footer />
       </Suspense>
     </div>

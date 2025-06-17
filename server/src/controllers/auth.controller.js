@@ -115,7 +115,7 @@ export const profile = async (req, res) => {
     const profile = await authModel.findOne({ _id: userId }).select("-password")
     const response = await threadModel.find({ userId: userId });
     const bookmark = await bookmarkModel.find({ userId }).populate('userId').populate('threadId');
-    const userCommunityThreads = await communityModel.findOne({ $or: [
+    const userCommunityThreads = await communityModel.find({ $or: [
       { ownerId: userId },
       { 'members.userId': userId }
     ] });
