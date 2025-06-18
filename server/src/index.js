@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 5001;
 
 app.use(express.json({ limit: "10mb" }));
 app.use(cors({
-    origin: ['http://localhost:5173'],
+    origin: [ 'https://voicely-five.vercel.app' || 'http://localhost:5173' ],
     methods: ["GET, POST, DELETE, PUT, PATCH"],
     credentials: true
 }));
