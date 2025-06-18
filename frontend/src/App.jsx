@@ -1,10 +1,11 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 
 import Footer from "./components/Footer";
 import Loading from "./components/Loading";
 import Navbar from "./components/Navbar";
+import { UseAuthStore } from "./store/UseAuthStore";
 import { UseThemeStore } from "./store/UseThemeStore";
 
 const Home = lazy(() => import("./pages/Home"));
@@ -25,13 +26,21 @@ const NotFound = () => (
 );
 
 const ProtectedRoute = ({ children }) => {
-  const  authUser = localStorage.getItem('auth-user');
+  const authUser = JSON.parse(localStorage.getItem('auth-user'));
   return authUser ? children : <Navigate to="/login" />;
 };
 
 function App() {
   const { theme } = UseThemeStore();
   const location = useLocation();
+  const setAuthUser = UseAuthStore((state) => state.setAuthUser);
+
+   useEffect(() => {
+    const storedUser = localStorage.getItem("auth-user");
+    if (storedUser) {
+      setAuthUser(JSON.parse(storedUser));
+    }
+  }, [setAuthUser]);
 
   const hideNavbarRoutes = ["/login", "/signup"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);

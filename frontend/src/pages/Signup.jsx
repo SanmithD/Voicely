@@ -26,8 +26,10 @@ function Signup() {
     e.preventDefault();
     const success = validateForm();
     if(success){
-      signup(formData);
-      navigate('/');
+      const isSignup = await signup(formData);
+      if(isSignup){
+        navigate('/');
+      }
     }
   }
 

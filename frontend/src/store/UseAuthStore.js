@@ -2,11 +2,11 @@ import toast from "react-hot-toast";
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.lib";
 
-const base_url = `http://localhost:5001/api`;
 
-export const UseAuthStore = create((set, get) => ({
+export const UseAuthStore = create((set) => ({
   isSigning: false,
   authUser: null,
+  setAuthUser: (user) => set({ authUser: user }),
   isCheckUser: true,
   isLogging: false,
   isProfile: false,
@@ -16,7 +16,7 @@ export const UseAuthStore = create((set, get) => ({
     try {
       const response = await axiosInstance.post(`/auth/signup`, data);
       set({ authUser: response.data });
-      localStorage.setItem('auth-user',true)
+      localStorage.setItem('auth-user',JSON.stringify(response.data))
     } catch (error) {
       toast.error("Failed to signup");
       console.log(error);
@@ -30,7 +30,7 @@ export const UseAuthStore = create((set, get) => ({
     try {
       const response = await axiosInstance.post(`/auth/login`, data);
       set({ authUser: response.data });
-      localStorage.setItem('auth-user',true)
+      localStorage.setItem('auth-user',JSON.stringify(response.data))
       toast.success("Logging to the Voicely");
     } catch (error) {
       console.log(error);

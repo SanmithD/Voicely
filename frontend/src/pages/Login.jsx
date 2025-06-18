@@ -26,8 +26,10 @@ function Login() {
     e.preventDefault();
     const success = validateForm();
     if(success){
-      login(formData);
-      navigate('/');
+      const isLogged = await login(formData);
+      if(isLogged){
+        navigate('/');
+      }
     }
   }
 
