@@ -1,4 +1,4 @@
-import { UserCircle2 } from "lucide-react";
+import { Loader, UserCircle2 } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Controllers from "../components/Controllers";
